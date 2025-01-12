@@ -2,8 +2,9 @@
 <p>Description: <%= @event.description %></p>
 <p>Location: <%= @event.location %></p>
 <p>Date and Time: <%= @event.date_time.strftime('%B %d, %Y %I:%M %p') %></p>
-<p>Total Tickets: <%= @event.total_tickets %></p>
 <p>Tickets Available: <%= @event.available_tickets %></p>
+<p>Tickets Booked: <%= @event.booked_tickets %></p>
+<p>Total Tickets: <%= @event.total_tickets %></p>
 
 <h3>Booked Tickets</h3>
 <table border="1">

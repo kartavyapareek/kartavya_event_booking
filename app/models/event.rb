@@ -7,8 +7,8 @@ class Event < ApplicationRecord
   validates_presence_of :name, :description, :location, :date_time, :total_tickets
   validates :total_tickets, numericality: { only_integer: true, greater_than: 0 }
 
-  # Check the number of available tickets
-  def available_tickets
-    total_tickets - tickets.sum(:quantity)
+  # Check the number of booked tickets
+  def booked_tickets
+    total_tickets - available_tickets
   end
 end

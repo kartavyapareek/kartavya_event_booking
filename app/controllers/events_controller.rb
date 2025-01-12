@@ -3,6 +3,13 @@ class EventsController < ApplicationController
   before_action :check_organizer_role, only: [ :new, :create ]
   before_action :set_event, only: [ :show, :book_ticket ]
 
+  after_create :expire_cache
+
+  def index
+    @events = Rails.cache.fetch("all_events", expires_in: 12.hours) { Event.all }
+  end
+
+
   def new
     @event = Event.new
   end
@@ -10,16 +17,13 @@ class EventsController < ApplicationController
   def create
     @event = Event.new(event_params)
     @event.user = current_user
+    @event.available_tickets = @event.total_tickets
 
     if @event.save
       redirect_to events_path, notice: "Event created successfully!"
     else
       render :new
     end
-  end
-
-  def index
-    @events = Event.all
   end
 
   def show
@@ -57,5 +61,9 @@ class EventsController < ApplicationController
     unless current_user.organizer?
       redirect_to root_path, alert: "You must be an organizer to create an event."
     end
+  end
+
+  def expire_cache
+    Rails.cache.delete("all_events")
   end
 end
