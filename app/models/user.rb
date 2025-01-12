@@ -6,6 +6,8 @@ class User < ApplicationRecord
 
   # Associations
   has_many :events
+  has_many :tickets
+  has_many :booked_events, through: :tickets, source: :event
 
   # Roles
   enum :role, { customer: "customer", organizer: "organizer" }
