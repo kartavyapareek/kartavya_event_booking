@@ -8,6 +8,9 @@ Rails.application.routes.draw do
     member do
       post :book_ticket
     end
+    collection do
+      get :booked_tickets
+    end
   end
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

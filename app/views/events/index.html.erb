@@ -1,5 +1,8 @@
-<h1>All Events</h1>
+<h1>Upcoming Events</h1>
 
+<% if user_signed_in? %>
+  <%= link_to 'View Booked Tickets', booked_tickets_events_path, class: 'btn btn-info' %>
+<% end %>
 
 <% if @events.any? %>
   <table border="1">

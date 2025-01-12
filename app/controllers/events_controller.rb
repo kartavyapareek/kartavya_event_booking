@@ -39,6 +39,10 @@ class EventsController < ApplicationController
     end
   end
 
+  def booked_tickets
+    @booked_tickets = current_user.tickets
+  end
+
   private
 
   def set_event
