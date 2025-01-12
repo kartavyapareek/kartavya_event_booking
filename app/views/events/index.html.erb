@@ -1,0 +1,46 @@
+<h1>All Events</h1>
+
+<% if user_signed_in? %>
+  <% if @events.any? %>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Event Name</th>
+          <th>Description</th>
+          <th>Location</th>
+          <th>Date and Time</th>
+          <th>Total Tickets</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @events.each do |event| %>
+          <tr>
+            <td><%= event.name %></td>
+            <td><%= event.description.truncate(50) %></td>
+            <td><%= event.location %></td>
+            <td><%= event.date_time.strftime('%B %d, %Y %I:%M %p') %></td>
+            <td><%= event.total_tickets %></td>
+            <td>
+              <% if current_user == event.user %>
+                
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p>No events found.</p>
+  <% end %>
+
+  <% if current_user.organizer? %>
+    <%= link_to 'Create New Event', new_event_path %>
+  <% end %>
+
+  <%= button_to 'Logout', destroy_user_session_path, method: :delete %>
+<% else %>
+  <!-- Show login and sign up buttons if not logged in -->
+  <p>Please <%= link_to 'Login', new_user_session_path %> or <%= link_to 'Sign Up', new_user_registration_path %> to participate.</p>
+<% end %>
+
