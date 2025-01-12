@@ -1,0 +1,14 @@
+<h1>Welcome to the Event Booking System</h1>
+
+<% if user_signed_in? %>
+  <h2>Welcome, <%= current_user.email %>!</h2>
+  <% if current_user.customer? %>
+    <p>You are logged in as a Customer.</p>
+  <% elsif current_user.organizer? %>
+    <p>You are logged in as an Organizer.</p>
+  <% end %>
+  
+  <%= button_to 'Logout', destroy_user_session_path, method: :delete %>
+<% else %>
+  <p>You are not logged in. Please <a href="<%= new_user_session_path %>">log in</a> or <a href="<%= new_user_registration_path %>">sign up</a>.</p>
+<% end %>
