@@ -26,7 +26,7 @@ Please check seed file for the user login details
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/kartavya/kartavya_event_booking.git
+   git clone https://github.com/kartavyapareek/kartavya_event_booking.git
 
    cd kartavya_event_booking
 
