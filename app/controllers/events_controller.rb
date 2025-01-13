@@ -1,9 +1,8 @@
 class EventsController < ApplicationController
   before_action :authenticate_user!, except: [ :index ]
-  before_action :check_organizer_role, only: [ :new, :create ]
+  before_action :check_organizer_role, only: [ :new, :create, :show ]
   before_action :set_event, only: [ :show, :book_ticket ]
-
-  after_create :expire_cache
+  after_action :expire_cache, only: [ :create ]
 
   def index
     @events = Rails.cache.fetch("all_events", expires_in: 12.hours) { Event.all }
@@ -37,7 +36,7 @@ class EventsController < ApplicationController
     result = TicketBookingService.call(current_user, @event, quantity) # Call the service
 
     if result[:status] == :success
-      redirect_to event_path(@event), notice: result[:message]
+      redirect_to booked_tickets_events_path, notice: result[:message]
     else
       redirect_to event_path(@event), alert: result[:message]
     end
