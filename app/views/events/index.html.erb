@@ -29,18 +29,23 @@
           <td><%= event.available_tickets %></td>
           <td><%= event.user.email %></td>
           <td>
-          <%= form_with url: book_ticket_event_path(event), method: :post, local: true do |form| %>
-            <div>
-              <%= form.number_field :quantity, min: 1, max: event.available_tickets, required: true, placeholder: 'Enter quantity' %>
-            </div>
-            <div>
-              <%= form.submit 'Book Now' %>
-            </div>
-          <% end %>
-          <% if user_signed_in? && current_user == event.user %>
-            <%= link_to 'Show Event', event_path(event) %>
-          <% end %>
-        </td>
+            <% if event.available_tickets.positive? %>
+              <%= form_with url: book_ticket_event_path(event), method: :post, local: true do |form| %>
+                <div>
+                  <%= form.number_field :quantity, min: 1, max: event.available_tickets, required: true, placeholder: 'Enter quantity' %>
+                </div>
+                
+                  <div>
+                    <%= form.submit 'Book Now' %>
+                  </div>
+              <% end %>
+            <% else %>
+              <span>Sold Out</span>
+            <% end %>
+            <% if user_signed_in? && current_user == event.user %>
+              <%= link_to 'Show Event', event_path(event) %>
+            <% end %>
+          </td>
         </tr>
       <% end %>
     </tbody>

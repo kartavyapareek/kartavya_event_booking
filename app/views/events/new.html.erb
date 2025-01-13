@@ -1,7 +1,6 @@
 <h1>Create a New Event</h1>
 
 <%= form_with(model: @event, local: true) do |form| %>
-   <%= @event.errors.full_messages %>
   <% if @event.errors.any? %>
     <div class="errors">
       <h2>There were some errors with your submission:</h2>
