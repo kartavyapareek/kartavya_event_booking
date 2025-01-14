@@ -44,4 +44,31 @@ RSpec.describe TicketBookingService do
       end
     end
   end
+
+  describe 'Parallal Booking' do
+    it 'allows parallel booking without overbooking the event' do
+      threads = []
+      results = []
+
+      # Simulate 10 parallel booking attempts
+      2.times do
+        threads << Thread.new do
+          ActiveRecord::Base.connection_pool.with_connection do
+            service = TicketBookingService.new(user, event, 6)
+            results << service.call
+          end
+        end
+      end
+
+      threads.each(&:join)
+
+      successful_bookings = results.select { |result| result[:status] == :success }
+      failed_bookings = results.select { |result| result[:status] == :failure }
+
+      expect(successful_bookings.size).to eq(1)
+      expect(failed_bookings.size).to eq(1)
+      expect(event.reload.available_tickets).to eq(4)
+      expect(Ticket.count).to eq(1)
+    end
+  end
 end
