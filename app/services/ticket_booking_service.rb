@@ -7,6 +7,8 @@ class TicketBookingService < ApplicationService
 
   def call
     ActiveRecord::Base.transaction do
+      @event.reload # reload to ensure the latesh version
+
       if @event.available_tickets >= @quantity
         @event.update!(available_tickets: @event.available_tickets - @quantity)
 
